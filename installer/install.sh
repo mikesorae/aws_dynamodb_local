@@ -1,30 +1,30 @@
 #!/bin/bash
 
-install_dir=${install_dir:-/usr/bin}
-initd_dir=${initd_dir:-/etc/rc.d/init.d}
+install_dir=${install_dir:-/var/lib}
+initd_dir=${initd_dir:-/etc/init.d}
 daemon_script="aws_dynamodb_local"
 
 url="http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest"
 
 # Check preinitialization
-rm -rf dynamodb_local_[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*
+# rm -rf dynamodb_local_latest
 
-echo "Downloading latest AWS DynamoDB Local..."
-wget --no-check-certificate $url
+if [ -f dynamodb_local_latest.tar.gz ];
+then
+  echo "AWS DynamoDB Local already exists"
+else
+  echo "Downloading latest AWS DynamoDB Local..."
+  wget --no-check-certificate $url -O dynamodb_local_latest.tar.gz
+fi
 
 echo "Installing AWS DynamoDB Local..."
-tar xzvf dynamodb_local_[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].tar.gz
-mv dynamodb_local_[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] $install_dir/aws_dynamodb_local
+mkdir -p $install_dir/aws_dynamodb_local
+tar xzvf dynamodb_local_latest.tar.gz -C $install_dir/aws_dynamodb_local/
 
-if [ -e $initd_dir/$daemon_script ];
-then
-	echo "Skip install daemon script because it already exists."
-else
-	echo "Installing daemon script..."
-	cp -upv $daemon_script $initd_dir/
-	chmod 755 $initd_dir/$daemon_script
-	chkconfig --add $initd_dir/$daemon_script
-fi
+echo "Installing daemon script..."
+cp -upv `dirname $0`/$daemon_script $initd_dir/
+chmod 755 $initd_dir/$daemon_script
+chkconfig --add $initd_dir/$daemon_script
 
 cat <<EOT
 

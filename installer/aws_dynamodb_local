@@ -4,16 +4,16 @@
 # description:  java application
 #
 
-java=/usr/java/default
+java=/usr/lib/jvm/java
 prog=aws_dynamodb_local
 dynamodb_dir=/usr/bin/aws_dynamodb_local
 jarprog=$dynamodb_dir/DynamoDBLocal.jar
 jarlib=$dynamodb_dir
 javaoptions="-Djava.library.path=$dynamodb_dir"
 
-pidfile=/var/run/${prog}.pid
-logfile=/var/log/${prog}.log
-lockfile=/var/lock/subsys/${prog}
+pidfile=/tmp/${prog}.pid
+logfile=/tmp/${prog}.log
+lockfile=/tmp/${prog}.lock
 
 cmdline="${java}/bin/java ${javaoptions} -jar ${jarprog}"
 RETVAL=0
