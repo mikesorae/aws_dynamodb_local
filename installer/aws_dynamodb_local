@@ -39,7 +39,7 @@ cd $dynamodb_dir
 
 start() {
      echo -n $"Starting ${prog} services: "
-     daemon --pidfile=${pidfile} "${cmdline} &"
+     daemon --pidfile=${pidfile} "${cmdline} > /dev/null &"
      RETVAL=$?
      pgrep -f "${jarprog}" > ${pidfile}
      echo
