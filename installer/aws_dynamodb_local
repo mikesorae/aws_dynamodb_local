@@ -6,7 +6,7 @@
 
 java=/usr/lib/jvm/java
 prog=aws_dynamodb_local
-dynamodb_dir=/usr/bin/aws_dynamodb_local
+dynamodb_dir=/var/lib/aws_dynamodb_local
 jarprog=$dynamodb_dir/DynamoDBLocal.jar
 jarlib=$dynamodb_dir
 javaoptions="-Djava.library.path=$dynamodb_dir"
